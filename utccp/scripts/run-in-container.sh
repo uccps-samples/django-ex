@@ -3,7 +3,7 @@
 # Use this script to run one-off commands inside a container of a pod where your
 # Python application code lives in.
 
-# You can accomplish the same results by using regular commands from OpenShift.
+# You can accomplish the same results by using regular commands from UTCCP.
 # This script is just wrapping calls to `oc` to make it a little more
 # convenient to use. In the future, the `oc` cli tool might incorporate changes
 # that make this script obsolete.
