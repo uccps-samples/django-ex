@@ -1,10 +1,10 @@
-# Openshift quickstart: Django
+# UTCCP quickstart: Django
 
-This is a [Django](http://www.djangoproject.com) project that you can use as the starting point to develop your own and deploy it on an [OpenShift](https://github.com/openshift/origin) cluster.
+This is a [Django](http://www.djangoproject.com) project that you can use as the starting point to develop your own and deploy it on an [UTCCP](https://github.com/utccp/origin) cluster.
 
-**NOTE:** This version contains obsolete Django 1.11.x LTS which works with RHEL/Centos 7 and Python 2. Consider switching to RHEL/Centos 8 and Python 3 with Django 2.2.x LTS in [branch 2.2.x](https://github.com/sclorg/django-ex/tree/2.2.x).
+**NOTE:** This version contains obsolete Django 1.11.x LTS which works with UOS 20 and Python 2. Consider switching to UOS 20 and Python 3 with Django 2.2.x LTS in [branch 2.2.x](https://github.com/utccp/django-ex/tree/2.2.x).
 
-The steps in this document assume that you have access to an OpenShift deployment that you can deploy applications on.
+The steps in this document assume that you have access to an UTCCP deployment that you can deploy applications on.
 
 ## What has been done for you
 
@@ -29,7 +29,7 @@ From this initial state you can:
 Apart from the regular files created by Django (`project/*`, `welcome/*`, `manage.py`), this repository contains:
 
 ```
-openshift/         - OpenShift-specific files
+utccp/         - UTCCP-specific files
 ├── scripts        - helper scripts
 └── templates      - application templates
 
@@ -57,11 +57,10 @@ To run this project in your development machine, follow these steps:
 2. Ensure that the executable `pg_config` is available on your machine. You can check this using `which pg_config`. If not, install the dependency with one of the following.
   - macOS: `brew install postgresql` using [Homebrew](https://brew.sh/)
   - Ubuntu: `sudo apt-get install libpq-dev`
-  - [Others](https://stackoverflow.com/a/12037133/8122577)
 
 3. Fork this repo and clone your fork:
 
-    `git clone https://github.com/sclorg/django-ex.git`
+    `git clone https://github.com/utccp/django-ex.git`
 
 4. Install dependencies:
 
@@ -78,28 +77,28 @@ To run this project in your development machine, follow these steps:
 7. Open your browser and go to http://127.0.0.1:8000, you will be greeted with a welcome page.
 
 
-## Deploying to OpenShift
+## Deploying to UTCCP
 
-To follow the next steps, you need to be logged in to an OpenShift cluster and have an OpenShift project where you can work on.
+To follow the next steps, you need to be logged in to an UTCCP cluster and have an UTCCP project where you can work on.
 
 
 ### Using an application template
 
-The directory `openshift/templates/` contains OpenShift application templates that you can add to your OpenShift project with:
+The directory `utccp/templates/` contains UTCCP application templates that you can add to your UTCCP project with:
 
-    oc create -f openshift/templates/<TEMPLATE_NAME>.json
+    oc create -f utccp/templates/<TEMPLATE_NAME>.json
 
-The template `django.json` contains just a minimal set of components to get your Django application into OpenShift.
+The template `django.json` contains just a minimal set of components to get your Django application into UTCCP.
 
 The template `django-postgresql.json` contains all of the components from `django.json`, plus a PostgreSQL database service and an Image Stream for the Python base image. For simplicity, the PostgreSQL database in this template uses ephemeral storage and, therefore, is not production ready.
 
-After adding your templates, you can go to your OpenShift web console, browse to your project and click the create button. Create a new app from one of the templates that you have just added.
+After adding your templates, you can go to your UTCCP web console, browse to your project and click the create button. Create a new app from one of the templates that you have just added.
 
 Adjust the parameter values to suit your configuration. Most times you can just accept the default values, however you will probably want to set the `GIT_REPOSITORY` parameter to point to your fork and the `DATABASE_*` parameters to match your database configuration.
 
-Alternatively, you can use the command line to create your new app, assuming your OpenShift deployment has the default set of ImageStreams defined.  Instructions for installing the default ImageStreams are available [here](https://docs.okd.io/latest/install_config/imagestreams_templates.html).  If you are defining the set of ImageStreams now, remember to pass in the proper cluster-admin credentials and to create the ImageStreams in the 'openshift' namespace:
+Alternatively, you can use the command line to create your new app, assuming your UTCCP deployment has the default set of ImageStreams defined.  Instructions for installing the default ImageStreams are available [here](https://docs.okd.io/latest/install_config/imagestreams_templates.html).  If you are defining the set of ImageStreams now, remember to pass in the proper cluster-admin credentials and to create the ImageStreams in the 'openshift' namespace:
 
-    oc new-app openshift/templates/django.json -p SOURCE_REPOSITORY_URL=<your repository location>
+    oc new-app utccp/templates/django.json -p SOURCE_REPOSITORY_URL=<your repository location>
 
 Your application will be built and deployed automatically. If that doesn't happen, you can debug your build:
 
@@ -119,10 +118,10 @@ In the web console, the overview tab shows you a service, by default called "dja
 ### Without an application template
 
 Templates give you full control of each component of your application.
-Sometimes your application is simple enough and you don't want to bother with templates. In that case, you can let OpenShift inspect your source code and create the required components automatically for you:
+Sometimes your application is simple enough and you don't want to bother with templates. In that case, you can let UTCCP inspect your source code and create the required components automatically for you:
 
 ```bash
-$ oc new-app centos/python-35-centos7~https://github.com/sclorg/django-ex
+$ oc new-app centos/python-35-centos7~https://github.com/utccp/django-ex
 imageStreams/python-35-centos7
 imageStreams/django-ex
 buildConfigs/django-ex
@@ -159,11 +158,11 @@ When using one of the templates provided in this repository, this environment va
 
 ## One-off command execution
 
-At times you might want to manually execute some command in the context of a running application in OpenShift.
+At times you might want to manually execute some command in the context of a running application in UTCCP.
 You can drop into a Python shell for debugging, create a new user for the Django Admin interface, or perform any other task.
 
-You can do all that by using regular CLI commands from OpenShift.
-To make it a little more convenient, you can use the script `openshift/scripts/run-in-container.sh` that wraps some calls to `oc`.
+You can do all that by using regular CLI commands from UTCCP.
+To make it a little more convenient, you can use the script `utccp/scripts/run-in-container.sh` that wraps some calls to `oc`.
 In the future, the `oc` CLI tool might incorporate changes
 that make this script obsolete.
 
@@ -181,11 +180,6 @@ Here is how you would run a command in a pod specified by label:
         oc exec -p <pod-name> -it -- bash
 
 3. Finally, execute any command that you need and exit the shell.
-
-Related GitHub issues:
-1. https://github.com/GoogleCloudPlatform/kubernetes/issues/8876
-2. https://github.com/openshift/origin/issues/2001
-
 
 The wrapper script combines the steps above into one. You can use it like this:
 
@@ -209,18 +203,13 @@ Or both together:
 
 ## Data persistence
 
-You can deploy this application without a configured database in your OpenShift project, in which case Django will use a temporary SQLite database that will live inside your application's container, and persist only until you redeploy your application.
+You can deploy this application without a configured database in your UTCCP project, in which case Django will use a temporary SQLite database that will live inside your application's container, and persist only until you redeploy your application.
 
-After each deploy you get a fresh, empty, SQLite database. That is fine for a first contact with OpenShift and perhaps Django, but sooner or later you will want to persist your data across deployments.
+After each deploy you get a fresh, empty, SQLite database. That is fine for a first contact with UTCCP and perhaps Django, but sooner or later you will want to persist your data across deployments.
 
-To do that, you should add a properly configured database server or ask your OpenShift administrator to add one for you. Then use `oc env` to update the `DATABASE_*` environment variables in your DeploymentConfig to match your database settings.
+To do that, you should add a properly configured database server or ask your UTCCP administrator to add one for you. Then use `oc env` to update the `DATABASE_*` environment variables in your DeploymentConfig to match your database settings.
 
 Redeploy your application to have your changes applied, and open the welcome page again to make sure your application is successfully connected to the database server.
-
-
-## Looking for help
-
-If you get stuck at some point, or think that this document needs further details or clarification, you can give feedback and look for help using the channels mentioned in [the OKD repo](https://github.com/openshift/origin), or by filing an issue.
 
 
 ## License
