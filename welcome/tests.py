@@ -5,7 +5,7 @@ from .database import info
 from django.test import TestCase
 
 # These basic tests are to be used as an example for running tests in S2I
-# and UTCCP when building an application image.
+# and UCCPS when building an application image.
 class PageViewModelTest(TestCase):
     def test_viewpage_model(self):
         pageview = PageView.objects.create(hostname='localhost')
